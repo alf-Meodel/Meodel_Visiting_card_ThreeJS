@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            margin: 0;
+            overflow: hidden;
+        }
+
+    </style>
+</head>
+<body>
+    <script src="js/three.js"></script>
+    <script src="js/OrbitControls.js"></script>
+
+
+    <script>
+
+        // RENDERER
+        var renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setClearColor(0x000000);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+
+        // Make Canva Reponsive on resize window
+        window.addEventListener('resize', function () {
+            var width = window.innerWidth;
+            var height = window.innerHeight;
+            renderer.setSize(width, height);
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+        })
+
+        // CAMERA
+        var camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 3000);
+        camera.position.set(0, 0, 150);
+
+        // Init SCENE
+        var scene = new THREE.Scene();
+
+        // LIGHTS
+        var ambLight = new THREE.AmbientLight(0xffffff, 0.9);
+        scene.add(ambLight);
+
+        var pointLight = new THREE.PointLight(0xfffef2, 0.95);
+        pointLight.position.set(1500, 0, 500);
+        scene.add(pointLight);
+
+        var pointLightB = new THREE.PointLight(0x4ed4c6, 0.5);
+        pointLightB.position.set(-2000, 0, -300);
+        scene.add(pointLightB);
+
+       
+
+        // Init Geometry MODEL
+        var geometry = new THREE.BoxGeometry(90, 50, .45);
+
+        // Textures
+
+        var texLoader = new THREE.TextureLoader();
+
+        var tex0 = texLoader.load('https://i.imgur.com/gNHzckU.png');
+        var tex1 = tex0;
+        var tex2 = tex0;
+        var tex3 = tex0;
+        var texFront = texLoader.load('img/meodel_f.jpg');
+        var texBack = texLoader.load('img/meodel_b.jpg');
+        var texMaskFront = texLoader.load('img/meodel_f_black.jpg');
+        var texMaskBack = texLoader.load('img/meodel_b_white.jpg');
+        var texClipFront = texLoader.load('img/meodel_f_black.jpg');
+        var texClipBack = texLoader.load('img/meodel_b_black.jpg');
+
+        var texCloud = texLoader.load('https://i.imgur.com/Q8CXq1R.png');
+
+        var tx = {
+            roughness: 0.75,
+            color: 0xe7e7e7,
+            metalness: 1.1,
+            bumpScale: 0.15
+        };
+
+        var cubeMaterials = [
+            new THREE.MeshBasicMaterial({ map: tex0 }),
+            new THREE.MeshBasicMaterial({ map: tex1 }),
+            new THREE.MeshBasicMaterial({ map: tex2 }),
+            new THREE.MeshBasicMaterial({ map: tex3 }),
+            new THREE.MeshStandardMaterial({
+                map: texFront,
+                metalness: tx['metalness'],
+                // color: tx['color'],
+                bumpScale: tx['bumpScale'],
+                roughnessMap: texClipFront,
+                roughness: tx['roughness'],
+                bumpMap: texCloud
+            }),
+            new THREE.MeshStandardMaterial({
+                map: texBack,
+                metalness: tx['metalness'],
+                // color: tx['color'],
+                bumpScale: tx['bumpScale'],
+                roughnessMap: texClipBack,
+                roughness: tx['roughness'],
+                bumpMap: texCloud
+            })
+        ];
+
+        // Material
+
+
+        // Set MODEL
+        var mesh = new THREE.Mesh(geometry, cubeMaterials);
+        mesh.position.set(0, 0, 0);
+
+        scene.add(mesh);
+
+        // ANIMATION
+        requestAnimationFrame(render);
+        function render() {
+            mesh.rotation.y += 0.005;
+            // mesh.rotation.x += 0.02;
+            renderer.render(scene, camera);
+            requestAnimationFrame(render);
+        }
+    </script>
+    
+</body>
+</html>
