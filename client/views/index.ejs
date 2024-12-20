@@ -46,25 +46,25 @@
 
         // LIGHTS (Fixed and Uniform)
         // Ambient light for base lighting
-        var ambLight = new THREE.AmbientLight(0xffffff, 0.6); // Soft, global illumination
+        var ambLight = new THREE.AmbientLight(0xffffff, 0.001); 
         scene.add(ambLight);
 
         // Directional light for front
-        var dirLightFront = new THREE.DirectionalLight(0xffffff, 0.8);
+        var dirLightFront = new THREE.DirectionalLight(0xffffff, 0.3);
         dirLightFront.position.set(0, 0, 200); // Position in front of the card
         scene.add(dirLightFront);
 
         // Directional light for back
-        var dirLightBack = new THREE.DirectionalLight(0xffffff, 0.8);
+        var dirLightBack = new THREE.DirectionalLight(0xffffff, 0.3);
         dirLightBack.position.set(0, 0, -200); // Position behind the card
         scene.add(dirLightBack);
 
         // Additional point lights for balanced lighting
-        var pointLightTop = new THREE.PointLight(0xffffff, 0.5);
+        var pointLightTop = new THREE.PointLight(0xffffff, 0.3);
         pointLightTop.position.set(0, 200, 0);
         scene.add(pointLightTop);
 
-        var pointLightBottom = new THREE.PointLight(0xffffff, 0.5);
+        var pointLightBottom = new THREE.PointLight(0xffffff, 0.3);
         pointLightBottom.position.set(0, -200, 0);
         scene.add(pointLightBottom);
 
